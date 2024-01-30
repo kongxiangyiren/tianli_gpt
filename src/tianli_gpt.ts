@@ -1,3 +1,6 @@
+// 引入css
+import './assets/index.css'
+
 console.log(
   "\n %c Post-Abstract-AI 开源博客文章摘要AI生成工具 %c https://github.com/zhheo/Post-Abstract-AI \n",
   "color: #fadfa3; background: #030307; padding:5px 0;",

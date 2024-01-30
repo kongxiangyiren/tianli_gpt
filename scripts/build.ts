@@ -1,9 +1,7 @@
 import { InlineConfig, build } from "vite";
 import { resolve, dirname, parse } from "path";
 import { fileURLToPath } from "url";
-import dts from "vite-plugin-dts";
-import * as sass from "sass";
-import { writeFileSync } from "fs";
+// import dts from "vite-plugin-dts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -23,16 +21,20 @@ const profiles = entries.flatMap((file): InlineConfig => {
         entry: resolve(__dirname, file),
         fileName: (format) => parse(file).name + ".min.js",
       },
+      rollupOptions: {
+        output: {
+          assetFileNames: 'tianli_gpt.[ext]'
+        }
+      },
     },
     plugins: [
-      dts({
-        entryRoot: "src",
-        copyDtsFiles: false,
-        insertTypesEntry: true,
-        // 不需要.d.ts 文件
-        beforeWriteFile: (filePath: string, content: string) => false,
-        tsconfigPath: resolve(__dirname, "../tsconfig.app.json"),
-      }),
+      // dts({
+      //   entryRoot: "src",
+      //   copyDtsFiles: false,
+      //   insertTypesEntry: true,
+      //   // // 不需要.d.ts 文件
+      //   // beforeWriteFile: (filePath: string, content: string) => false
+      // }),
     ],
   };
 });
@@ -47,11 +49,11 @@ async function main() {
 
 await main();
 
-// 编译sass
-const result = await sass.compileAsync(
-  resolve(__dirname, "../src/assets/index.scss"),
-  {
-    style: "compressed",
-  }
-);
-writeFileSync(resolve(__dirname, "../dist/tianli_gpt.css"), result.css);
+// // 编译sass
+// const result = await sass.compileAsync(
+//   resolve(__dirname, "../src/assets/index.scss"),
+//   {
+//     style: "compressed",
+//   }
+// );
+// writeFileSync(resolve(__dirname, "../dist/tianli_gpt.css"), result.css);
