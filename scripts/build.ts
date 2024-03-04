@@ -1,6 +1,7 @@
 import { InlineConfig, build } from "vite";
 import { resolve, dirname, parse } from "path";
 import { fileURLToPath } from "url";
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 // import dts from "vite-plugin-dts";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +29,8 @@ const profiles = entries.flatMap((file): InlineConfig => {
       },
     },
     plugins: [
+      // 注入css
+      cssInjectedByJsPlugin()
       // dts({
       //   entryRoot: "src",
       //   copyDtsFiles: false,
