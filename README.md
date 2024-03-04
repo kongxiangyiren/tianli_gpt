@@ -5,5 +5,5 @@
 ## 使用 ts+vite+sass 重新编译
 
 ```html
-<script src="https://cdn1.tianli0.top/gh/kongxiangyiren/tianli_gpt@v0.0.2/dist/tianli_gpt.min.js"></script>
+<script src="https://cdn1.tianli0.top/gh/kongxiangyiren/tianli_gpt@v0.0.3/dist/tianli_gpt.min.js"></script>
 ```
