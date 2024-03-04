@@ -1,0 +1,31 @@
+{
+  "name": "tianli_gpt",
+  "license": "MIT",
+  "version": "0.0.0",
+  "type": "module",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/tianli_gpt.min.js",
+  "module": "./dist/tianli_gpt.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/tianli_gpt.mjs",
+    "require": "./dist/tianli_gpt.cjs"
+  },
+  "scripts": {
+    "prepare": "tsc && vite build",
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10",
+    "vite-plugin-css-injected-by-js": "^3.4.0",
+    "vite-plugin-dts": "^3.7.3"
+  }
+}
