@@ -245,9 +245,18 @@ function tianliGPT(usePjax: boolean) {
       console.log('TianliGPT本次提交的内容为：' + content);
     }
     tianliGPT.fetchTianliGPT(content).then(data => {
-      // @ts-expect-error
+      if (typeof data === 'string') {
+        const explanationDiv = document.querySelector(
+          '.tianliGPT-explanation'
+        ) as HTMLElement | null;
+        if (explanationDiv) {
+          explanationDiv.textContent = data;
+        }
+        return;
+      }
+
       const summary = data.summary;
-      // @ts-expect-error
+
       const audioId = data.audioId;
       const buttonDiv = document.querySelector('.tianliGPT-tag') as HTMLElement | null;
       if (!buttonDiv) {
@@ -301,84 +310,89 @@ document.addEventListener('pjax:complete', function () {
   tianliGPT(true);
 });
 
-document.addEventListener('click', function (event) {
-  const target = event.target as HTMLElement | null;
-  if (!target) {
-    return;
-  }
-  if (target.classList.contains('tianliGPT-tag')) {
-    playAudio();
-  }
-});
+// fix: 点击按钮播放音频会多次播放
+// document.addEventListener('click', function (event) {
+//   const target = event.target as HTMLElement | null;
+//   if (!target) {
+//     return;
+//   }
+//   if (target.classList.contains('tianliGPT-tag')) {
+//     playAudio();
+//   }
+// });
 
-let audioPlayer: HTMLAudioElement | null = null; // 用于存储音频播放器对象
 function playAudio() {
-  if (audioPlayer && !audioPlayer.paused) {
-    audioPlayer.pause();
-  } else {
-    if (!audioPlayer) {
-      const buttonDiv = document.querySelector('.tianliGPT-tag') as HTMLElement | null;
-      if (!buttonDiv) {
-        return;
-      }
-      const audioId = buttonDiv.dataset.audioId;
-
-      if (!audioId) {
-        console.error('未找到音频 ID');
-        return;
-      }
-
-      const audioUrl = `https://summary.tianli0.top/audio?id=${encodeURIComponent(
-        audioId
-      )}&key=${encodeURIComponent(tianliGPT_key)}`;
-
-      audioPlayer = new Audio(audioUrl);
-      audioPlayer.addEventListener('ended', () => {
-        buttonDiv.classList.remove('playing');
-      });
-
-      audioPlayer.addEventListener('play', () => {
-        buttonDiv.classList.add('playing');
-      });
-
-      audioPlayer.addEventListener('pause', () => {
-        buttonDiv.classList.remove('playing');
-      });
-    }
-
-    setTimeout(() => {
-      audioPlayer?.play().catch(error => {
-        console.error('播放音频失败:', error);
-      });
-    }, 100); // 添加延迟以确保播放请求能够正常执行
-  }
-
-  const buttonDiv = document.querySelector('.tianliGPT-tag') as HTMLElement | null;
-  if (!buttonDiv) {
-    return;
-  }
-
-  buttonDiv.addEventListener('click', function () {
-    buttonDiv.classList.toggle('playing');
-  });
-
-  const svgAnimation =
-    '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1692880829044" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2346" data-darkreader-inline-fill="" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20"><path d="M512 1024a512 512 0 1 0 0-1024 512 512 0 1 0 0 1024z m0-704a192 192 0 1 1 0 384 192 192 0 1 1 0-384z" p-id="2347"></path></svg>';
-
-  if (buttonDiv.classList.contains('playing')) {
-    buttonDiv.innerHTML = svgAnimation;
-    buttonDiv.style.animation = '';
-    buttonDiv.style.color = '#ff0000';
-    buttonDiv.style.backgroundColor = 'transparent';
-    buttonDiv.style.padding = '0';
-  } else {
-    buttonDiv.innerHTML = svgAnimation;
-    buttonDiv.style.animation = '';
-    buttonDiv.style.color = '#000000';
-    buttonDiv.style.backgroundColor = 'transparent';
-    buttonDiv.style.padding = '0';
-  }
+  return console.warn('音频功能暂时不可用');
 }
+// let audioPlayer: HTMLAudioElement | null = null; // 用于存储音频播放器对象
+// function playAudio() {
+//   if (audioPlayer && !audioPlayer.paused) {
+//     audioPlayer.pause();
+//   } else {
+//     if (!audioPlayer) {
+//       const buttonDiv = document.querySelector('.tianliGPT-tag') as HTMLElement | null;
+//       if (!buttonDiv) {
+//         return;
+//       }
+//       const audioId = buttonDiv.dataset.audioId;
+
+//       if (!audioId) {
+//         console.error('未找到音频 ID');
+//         return;
+//       }
+
+//       const audioUrl = `https://summary.tianli0.top/audio?id=${encodeURIComponent(
+//         audioId
+//       )}&key=${encodeURIComponent(tianliGPT_key)}`;
+
+//       audioPlayer = new Audio(audioUrl);
+
+//       audioPlayer.addEventListener('ended', () => {
+//         buttonDiv.classList.remove('playing');
+//       });
+
+//       audioPlayer.addEventListener('play', () => {
+//         buttonDiv.classList.add('playing');
+//       });
+
+//       audioPlayer.addEventListener('pause', () => {
+//         buttonDiv.classList.remove('playing');
+//       });
+//     }
+
+//     setTimeout(() => {
+//       audioPlayer?.play().catch(error => {
+//         console.error('播放音频失败:', error);
+//       });
+//     }, 100); // 添加延迟以确保播放请求能够正常执行
+//   }
+
+//   const buttonDiv = document.querySelector('.tianliGPT-tag') as HTMLElement | null;
+//   if (!buttonDiv) {
+//     return;
+//   }
+
+//   buttonDiv.addEventListener('click', function () {
+//     buttonDiv.classList.toggle('playing');
+//   });
+
+//   const svgAnimation =
+//     '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1692880829044" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2346" data-darkreader-inline-fill="" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20"><path d="M512 1024a512 512 0 1 0 0-1024 512 512 0 1 0 0 1024z m0-704a192 192 0 1 1 0 384 192 192 0 1 1 0-384z" p-id="2347"></path></svg>';
+
+//   if (buttonDiv.classList.contains('playing')) {
+//     buttonDiv.innerHTML = svgAnimation;
+//     buttonDiv.style.animation = '';
+//     buttonDiv.style.color = '#ff0000';
+//     buttonDiv.style.backgroundColor = 'transparent';
+//     buttonDiv.style.padding = '0';
+//   } else {
+//     buttonDiv.innerHTML = svgAnimation;
+//     buttonDiv.style.animation = '';
+//     buttonDiv.style.color = '#000000';
+//     buttonDiv.style.backgroundColor = 'transparent';
+//     buttonDiv.style.padding = '0';
+//   }
+// }
 
 document.addEventListener('click', function (event) {
   const target: any = event.target;
