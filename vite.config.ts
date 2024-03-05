@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
+import svgPlugin from './plugins/svg';
 export default defineConfig({
   plugins: [
+    svgPlugin(),
     cssInjectedByJsPlugin(),
     dts({
       entryRoot: './lib',

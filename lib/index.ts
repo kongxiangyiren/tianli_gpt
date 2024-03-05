@@ -1,6 +1,6 @@
 // 引入css
 import './assets/index.css';
-import ai from './assets/ai.svg?raw';
+import ai from './assets/ai.svg';
 
 console.log(
   '\n %c Post-Abstract-AI 开源博客文章摘要AI生成工具 %c https://github.com/zhheo/Post-Abstract-AI \n',

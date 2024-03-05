@@ -1,5 +1,5 @@
 (function(){"use strict";try{if(typeof document<"u"){var e=document.createElement("style");e.appendChild(document.createTextNode(":root{--heo-white: #fff;--heo-white-op: rgba(255, 255, 255, .2);--heo-black: #000;--heo-black-op: rgba(0, 0, 0, .2);--heo-none: #00000000;--heo-gray: #999999;--heo-gray-op: #9999992b;--heo-vip: #e5a80d;--heo-main: var(--heo-theme);--heo-main-op: var(--heo-theme-op);--heo-main-op-deep: var(--heo-theme-op-deep);--heo-main-none: var(--heo-theme-none);--heo-shadow-theme: 0 8px 12px -3px var(--heo-theme-op);--heo-shadow-blackdeep: 0 2px 16px -3px rgba(0, 0, 0, .15);--heo-shadow-main: 0 8px 12px -3px var(--heo-main-op);--heo-shadow-blue: 0 8px 12px -3px rgba(40, 109, 234, .2);--heo-shadow-white: 0 8px 12px -3px rgba(255, 255, 255, .2);--heo-shadow-black: 0 0 12px 4px rgba(0, 0, 0, .05);--heo-shadow-yellow: 0px 38px 77px -26px rgba(255, 201, 62, .12);--heo-shadow-red: 0 8px 12px -3px #ee7d7936;--heo-shadow-green: 0 8px 12px -3px #87ee7936;--heo-logo-color: linear-gradient(215deg, #4584ff 0%, #cf0db9 100%);--heo-snackbar-time: 5s;--heo-theme: #425AEF;--heo-theme-op: #4259ef23;--heo-theme-op-deep: #4259efdd;--heo-theme-none: #4259ef01;--heo-blue: #425AEF;--heo-red: #f04a63;--heo-pink: #FF7C7C;--heo-green: #57bd6a;--heo-yellow: #c28b00;--heo-yellow-op: #d99c001a;--heo-orange: #e38100;--heo-fontcolor: #363636;--heo-background: #f7f9fe;--heo-reverse: #000;--heo-maskbg: rgba(255, 255, 255, .6);--heo-maskbgdeep: rgba(255, 255, 255, .85);--heo-hovertext: var(--heo-main);--heo-ahoverbg: #F7F7FA;--heo-lighttext: var(--heo-main);--heo-secondtext: rgba(60, 60, 67, .8);--heo-scrollbar: rgba(60, 60, 67, .4);--heo-card-btn-bg: #edf0f7;--heo-post-blockquote-bg: #fafcff;--heo-post-tabs-bg: #f2f5f8;--heo-secondbg: #f1f3f8;--heo-shadow-nav: 0 5px 12px -5px rgba(102, 68, 68, .05);--heo-card-bg: #fff;--heo-card-bg-op: var(--heo-black-op);--heo-card-bg-none: rgba(255, 255, 255, 0);--heo-shadow-lightblack: 0 5px 12px -5px rgba(102, 68, 68, 0);--heo-shadow-light2black: 0 5px 12px -5px rgba(102, 68, 68, 0);--heo-card-border: #e3e8f7;--heo-shadow-border: 0 8px 16px -4px #2c2d300c;--style-border: 1px solid var(--heo-card-border);--style-border-always: 1px solid var(--heo-card-border);--style-border-hover: 1px solid var(--heo-main);--style-border-hover-always: 1px solid var(--heo-main);--style-border-dashed: 1px dashed var(--heo-theme-op);--style-border-forever: 2px solid var(--heo-main)}[data-theme=light]{--heo-theme: #425AEF;--heo-theme-op: #4259ef23;--heo-theme-op-deep: #4259efdd;--heo-theme-none: #4259ef01;--heo-blue: #425AEF;--heo-red: #f04a63;--heo-pink: #FF7C7C;--heo-green: #57bd6a;--heo-yellow: #c28b00;--heo-yellow-op: #d99c001a;--heo-orange: #e38100;--heo-fontcolor: #363636;--heo-background: #f7f9fe;--heo-reverse: #000;--heo-maskbg: rgba(255, 255, 255, .6);--heo-maskbgdeep: rgba(255, 255, 255, .85);--heo-hovertext: var(--heo-main);--heo-ahoverbg: #F7F7FA;--heo-lighttext: var(--heo-main);--heo-secondtext: rgba(60, 60, 67, .8);--heo-scrollbar: rgba(60, 60, 67, .4);--heo-card-btn-bg: #edf0f7;--heo-post-blockquote-bg: #fafcff;--heo-post-tabs-bg: #f2f5f8;--heo-secondbg: #f1f3f8;--heo-shadow-nav: 0 5px 12px -5px rgba(102, 68, 68, .05);--heo-card-bg: #fff;--heo-card-bg-op: var(--heo-black-op);--heo-card-bg-none: rgba(255, 255, 255, 0);--heo-shadow-lightblack: 0 5px 12px -5px rgba(102, 68, 68, 0);--heo-shadow-light2black: 0 5px 12px -5px rgba(102, 68, 68, 0);--heo-card-border: #e3e8f7;--heo-shadow-border: 0 8px 16px -4px #2c2d300c;--style-border: 1px solid var(--heo-card-border);--style-border-always: 1px solid var(--heo-card-border);--style-border-hover: 1px solid var(--heo-main);--style-border-hover-always: 1px solid var(--heo-main);--style-border-dashed: 1px dashed var(--heo-theme-op);--style-border-forever: 2px solid var(--heo-main)}[data-theme=dark],body.dark,body.dark-theme{--heo-theme: #f2b94b;--heo-theme-op: #f2b94b23;--heo-theme-op-deep: #f2b94bdd;--heo-theme-none: #f2b94b00;--heo-blue: #0084FF;--heo-red: #FF3842;--heo-pink: #d44040;--heo-green: #3e9f50;--heo-yellow: #ffc93e;--heo-yellow-op: #ffc93e30;--heo-orange: #ff953e;--heo-fontcolor: #F7F7FA;--heo-background: #18171d;--heo-reverse: #fff;--heo-maskbg: rgba(0, 0, 0, .6);--heo-maskbgdeep: rgba(0, 0, 0, .85);--heo-hovertext: #0A84FF;--heo-ahoverbg: #fff;--heo-lighttext: var(--heo-theme);--heo-secondtext: #a1a2b8;--heo-scrollbar: rgba(200, 200, 223, .4);--heo-card-btn-bg: #30343f;--heo-post-blockquote-bg: #000;--heo-post-tabs-bg: #121212;--heo-secondbg: #30343f;--heo-shadow-nav: 0 5px 20px 0px rgba(28, 28, 28, .4);--heo-card-bg: #1d1e22;--heo-card-bg-op: var(--heo-white-op);--heo-card-bg-none: #1d1b2600;--heo-shadow-lightblack: 0 5px 12px -5px rgba(102, 68, 68, 0);--heo-shadow-light2black: 0 5px 12px -5px rgba(102, 68, 68, 0);--heo-card-border: #3d3d3f;--heo-shadow-border: 0 8px 16px -4px #00000050;--style-border: 1px solid var(--heo-card-border);--style-border-always: 1px solid var(--heo-card-border);--style-border-hover: 1px solid var(--heo-theme);--style-border-hover-always: 1px solid var(--heo-theme);--style-border-dashed: 1px dashed var(--heo-theme-op);--style-border-forever: 2px solid var(--heo-lighttext)}.post-TianliGPT{background:var(--heo-secondbg);border-radius:12px;padding:12px;line-height:1.3;border:var(--style-border-always);margin:16px 0}@media screen and (max-width: 768px){.post-TianliGPT{margin-top:22px}}.tianliGPT-title{display:flex;color:var(--heo-lighttext);border-radius:8px;align-items:center;padding:0 12px;cursor:default;-webkit-user-select:none;user-select:none;position:relative}.tianliGPT-title-text{font-weight:700;margin-left:8px;line-height:1}.tianliGPT-explanation{margin-top:12px;padding:8px 12px;background:var(--heo-card-bg);border-radius:8px;border:var(--style-border-always);font-size:15px;line-height:1.4;display:flex}.tianliGPT-suggestions{display:flex;flex-wrap:wrap}.tianliGPT-suggestions .tianliGPT-suggestions-item{margin-top:12px;padding:8px 12px;background:var(--heo-card-bg);border-radius:8px 8px 8px 0;border:var(--style-border-always);font-size:15px;line-height:1.4;display:flex;width:fit-content;margin-right:12px;cursor:pointer;transition:.3s}.tianliGPT-suggestions .tianliGPT-suggestions-item:hover{background:var(--heo-main);color:var(--heo-white)}.blinking-cursor{background-color:var(--heo-main);width:10px;height:16px;display:inline-block;vertical-align:middle;animation:blinking-cursor .5s infinite;-webkit-animation:blinking-cursor .5s infinite;margin-left:4px}@keyframes blinking-cursor{0%{opacity:1}40%{opacity:1}50%{opacity:0}90%{opacity:0}to{opacity:1}}.tianliGPT-tag{font-size:12px;background-color:var(--heo-lighttext);color:var(--heo-card-bg);font-weight:700;border-radius:4px;margin-left:auto;line-height:1;padding:4px;display:flex;align-items:center;justify-content:center;transition:all .3s,background-color 0s;position:absolute;right:12px}ins.adsbygoogle{margin:16px 0;background:var(--heo-card-bg);border-radius:12px;overflow:hidden;border:var(--style-border-always)}#tianliGPT-Toggle{font-size:12px;background:var(--heo-lighttext);color:var(--heo-card-bg);padding:4px;border-radius:4px;margin-left:6px;transform:scale(.8);cursor:pointer;transition:.3s;font-weight:700}#tianliGPT-Toggle:hover{background:var(--heo-fontcolor);color:var(--heo-card-bg)}.tianliGPT-title-icon{width:20px;height:20px}.tianliGPT-title-icon svg{width:20px;height:20px;fill:var(--heo-main)}.tianliGPT-title-icon svg path{fill:var(--heo-main)}.tianliGPT-tag svg{fill:#7e8a97}@keyframes breathe{0%{-webkit-transform:scale(.97);-moz-transform:scale(.97);-o-transform:scale(.97);-ms-transform:scale(.97);transform:scale(.97)}50%{-webkit-transform:scale(1.1);-moz-transform:scale(1.1);-o-transform:scale(1.1);-ms-transform:scale(1.1);transform:scale(1.1)}to{-webkit-transform:scale(.97);-moz-transform:scale(.97);-o-transform:scale(.97);-ms-transform:scale(.97);transform:scale(.97)}}.tianliGPT-tag.playing svg{animation:.5s linear 0s infinite normal none running breathe;transform-origin:center;width:20px;height:20px}")),document.head.appendChild(e)}}catch(o){console.error("vite-plugin-css-injected-by-js",o)}})();
-const x = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48px" height="48px" viewBox="0 0 48 48"><title>机器人</title><g id="&#x673A;&#x5668;&#x4EBA;" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M34.717885,5.03561087 C36.12744,5.27055371 37.079755,6.60373651 36.84481,8.0132786 L35.7944,14.3153359 L38.375,14.3153359 C43.138415,14.3153359 47,18.1768855 47,22.9402569 L47,34.4401516 C47,39.203523 43.138415,43.0650727 38.375,43.0650727 L9.625,43.0650727 C4.861585,43.0650727 1,39.203523 1,34.4401516 L1,22.9402569 C1,18.1768855 4.861585,14.3153359 9.625,14.3153359 L12.2056,14.3153359 L11.15519,8.0132786 C10.920245,6.60373651 11.87256,5.27055371 13.282115,5.03561087 C14.69167,4.80066802 16.024865,5.7529743 16.25981,7.16251639 L17.40981,14.0624532 C17.423955,14.1470924 17.43373,14.2315017 17.43948,14.3153359 L30.56052,14.3153359 C30.56627,14.2313867 30.576045,14.1470924 30.59019,14.0624532 L31.74019,7.16251639 C31.975135,5.7529743 33.30833,4.80066802 34.717885,5.03561087 Z M38.375,19.4902885 L9.625,19.4902885 C7.719565,19.4902885 6.175,21.0348394 6.175,22.9402569 L6.175,34.4401516 C6.175,36.3455692 7.719565,37.89012 9.625,37.89012 L38.375,37.89012 C40.280435,37.89012 41.825,36.3455692 41.825,34.4401516 L41.825,22.9402569 C41.825,21.0348394 40.280435,19.4902885 38.375,19.4902885 Z M14.8575,23.802749 C16.28649,23.802749 17.445,24.9612484 17.445,26.3902253 L17.445,28.6902043 C17.445,30.1191812 16.28649,31.2776806 14.8575,31.2776806 C13.42851,31.2776806 12.27,30.1191812 12.27,28.6902043 L12.27,26.3902253 C12.27,24.9612484 13.42851,23.802749 14.8575,23.802749 Z M33.1425,23.802749 C34.57149,23.802749 35.73,24.9612484 35.73,26.3902253 L35.73,28.6902043 C35.73,30.1191812 34.57149,31.2776806 33.1425,31.2776806 C31.71351,31.2776806 30.555,30.1191812 30.555,28.6902043 L30.555,26.3902253 C30.555,24.9612484 31.71351,23.802749 33.1425,23.802749 Z" id="&#x5F62;&#x72B6;&#x7ED3;&#x5408;" fill="#444444" fill-rule="nonzero"></path></g></svg>';
+const A = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g id="机器人" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1"><path id="形状结合" fill="#444" fill-rule="nonzero" d="M34.718 5.036a2.59 2.59 0 0 1 2.127 2.977l-1.05 6.302h2.58A8.625 8.625 0 0 1 47 22.94v11.5a8.625 8.625 0 0 1-8.625 8.625H9.625A8.625 8.625 0 0 1 1 34.44v-11.5a8.625 8.625 0 0 1 8.625-8.625h2.58l-1.05-6.302a2.588 2.588 0 0 1 5.105-.85l1.15 6.9q.021.127.03.252h13.12q.009-.126.03-.253l1.15-6.9a2.59 2.59 0 0 1 2.978-2.126m3.657 14.454H9.625a3.45 3.45 0 0 0-3.45 3.45v11.5a3.45 3.45 0 0 0 3.45 3.45h28.75a3.45 3.45 0 0 0 3.45-3.45v-11.5a3.45 3.45 0 0 0-3.45-3.45m-23.517 4.313a2.59 2.59 0 0 1 2.587 2.587v2.3a2.588 2.588 0 0 1-5.175 0v-2.3a2.59 2.59 0 0 1 2.588-2.587m18.284 0a2.59 2.59 0 0 1 2.588 2.587v2.3a2.588 2.588 0 0 1-5.175 0v-2.3a2.59 2.59 0 0 1 2.587-2.587"/></g></svg>';
 console.log(
   `
  %c Post-Abstract-AI 开源博客文章摘要AI生成工具 %c https://github.com/zhheo/Post-Abstract-AI 
@@ -7,7 +7,7 @@ console.log(
   "color: #fadfa3; background: #030307; padding:5px 0;",
   "background: #fadfa3; padding:5px 0;"
 );
-function P(i) {
+function w(i) {
   let c = !1;
   function a(t) {
     T();
@@ -19,7 +19,7 @@ function P(i) {
     const r = document.createElement("div");
     r.className = "tianliGPT-title", l.appendChild(r);
     const e = document.createElement("i");
-    e.className = "tianliGPT-title-icon", r.appendChild(e), e.innerHTML = x;
+    e.className = "tianliGPT-title-icon", r.appendChild(e), e.innerHTML = A;
     const o = document.createElement("div");
     o.className = "tianliGPT-title-text", o.textContent = "AI摘要", r.appendChild(o);
     const s = document.createElement("div");
@@ -100,8 +100,8 @@ function P(i) {
       let e = !0, o = 0, s = !0, u = performance.now();
       const p = () => {
         if (o < t.length && e) {
-          const g = performance.now(), w = g - u, C = t.slice(o, o + 1), G = /[，。！、？,.!?]/.test(C) ? l * r : l;
-          w >= G && (n.innerText = t.slice(0, o + 1), u = g, o++, o < t.length ? n.innerHTML = t.slice(0, o) + '<span class="blinking-cursor"></span>' : (n.innerHTML = t, n.style.display = "block", c = !1, f.disconnect())), requestAnimationFrame(p);
+          const g = performance.now(), P = g - u, L = t.slice(o, o + 1), k = /[，。！、？,.!?]/.test(L) ? l * r : l;
+          P >= k && (n.innerText = t.slice(0, o + 1), u = g, o++, o < t.length ? n.innerHTML = t.slice(0, o) + '<span class="blinking-cursor"></span>' : (n.innerHTML = t, n.style.display = "block", c = !1, f.disconnect())), requestAnimationFrame(p);
         }
       }, f = new IntersectionObserver(
         (g) => {
@@ -111,8 +111,8 @@ function P(i) {
         },
         { threshold: 0 }
       );
-      let L = document.querySelector(".post-TianliGPT");
-      L && f.observe(L);
+      let v = document.querySelector(".post-TianliGPT");
+      v && f.observe(v);
     }
   };
   function y() {
@@ -139,16 +139,16 @@ function P(i) {
     h();
   });
 }
-P(!1);
+w(!1);
 document.addEventListener("pjax:complete", function() {
-  P(!0);
+  w(!0);
 });
 document.addEventListener("click", function(i) {
   const c = i.target;
-  c && c.classList.contains("tianliGPT-tag") && v();
+  c && c.classList.contains("tianliGPT-tag") && G();
 });
 let d = null;
-function v() {
+function G() {
   if (d && !d.paused)
     d.pause();
   else {
@@ -191,5 +191,5 @@ document.addEventListener("click", function(i) {
   const c = i.target, a = document.querySelector(".tianliGPT-tag");
   a && (a.addEventListener("click", function() {
     a.classList.toggle("playing");
-  }), (c === a || a.contains(c)) && v());
+  }), (c === a || a.contains(c)) && G());
 });
