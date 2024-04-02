@@ -2,8 +2,27 @@
 import './assets/index.css';
 import ai from './assets/ai.svg';
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  var tianliGPT_postSelector: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  var tianliGPT_wordLimit: number;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  var tianliGPT_key: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  var tianliGPT_typingAnimate: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  var tianliGPT_postURL: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  var tianliGPT_Title: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  var tianliGPT_Name: string;
+}
+export {};
+
+
 console.log(
-  '\n %c Post-Abstract-AI 开源博客文章摘要AI生成工具 %c https://github.com/zhheo/Post-Abstract-AI \n',
+  '\n %c Post-Abstract-AI 博客文章摘要AI生成工具 %c https://github.com/zhheo/Post-Abstract-AI \n',
   'color: #fadfa3; background: #030307; padding:5px 0;',
   'background: #fadfa3; padding:5px 0;'
 );
@@ -40,13 +59,21 @@ function tianliGPT(usePjax: boolean) {
 
     const aiTitleTextDiv = document.createElement('div');
     aiTitleTextDiv.className = 'tianliGPT-title-text';
-    aiTitleTextDiv.textContent = 'AI摘要';
+    if (typeof tianliGPT_Title === 'undefined') {
+      aiTitleTextDiv.textContent = 'AI摘要';
+    } else {
+      aiTitleTextDiv.textContent = tianliGPT_Title;
+    }
     aiTitleDiv.appendChild(aiTitleTextDiv);
 
     const aiTagDiv = document.createElement('div');
     aiTagDiv.className = 'tianliGPT-tag';
     aiTagDiv.id = 'tianliGPT-tag';
-    aiTagDiv.textContent = 'TianliGPT';
+    if (typeof tianliGPT_Name === 'undefined') {
+      aiTagDiv.textContent = 'TianliGPT';
+    } else {
+      aiTagDiv.textContent = tianliGPT_Name;
+    }
     aiTitleDiv.appendChild(aiTagDiv);
 
     const aiExplanationDiv = document.createElement('div');
@@ -112,11 +139,16 @@ function tianliGPT(usePjax: boolean) {
 
     fetchTianliGPT: async function (content: string | number | boolean) {
       if (!tianliGPT_key) {
-        return '没有获取到key，代码可能没有安装正确。如果你需要在tianli_gpt文件引用前定义tianliGPT_key变量。详细请查看文档。';
+        const info =
+          '没有获取到key，代码可能没有安装正确。如果你需要在tianli_gpt文件引用前定义tianliGPT_key变量。详细请查看文档。';
+        tianliGPT.aiShowAnimation(info);
+        return info;
       }
 
       if (tianliGPT_key === '5Q5mpqRK5DkwT1X9Gi5e') {
-        return '请购买 key 使用，如果你能看到此条内容，则说明代码安装正确。';
+        const info = '请购买 key 使用，如果你能看到此条内容，则说明代码安装正确。';
+        tianliGPT.aiShowAnimation(info);
+        return info;
       }
       const url = window.location.href;
       const title = document.title;
@@ -125,25 +157,75 @@ function tianliGPT(usePjax: boolean) {
       )}&key=${encodeURIComponent(tianliGPT_key)}&url=${encodeURIComponent(
         url
       )}&title=${encodeURIComponent(title)}`;
-      // const timeout = 20000; // 设置超时时间（毫秒）
+      const timeout = 20000; // 设置超时时间（毫秒）
 
       try {
         const controller = new AbortController();
-        // const timeoutId = setTimeout(() => controller.abort(), timeout);
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
         const response = await fetch(apiUrl, { signal: controller.signal });
+        clearTimeout(timeoutId); // 清除定时器，避免不必要的abort
+
         if (response.ok) {
           const data = await response.json();
           return {
-            summary: data.summary,
-            audioId: data.id // 获取音频的 ID
+            summary: data.summary
           };
         } else {
-          if (response.status === 402) {
-            document.querySelectorAll('.post-TianliGPT').forEach(el => {
-              (el as HTMLElement).style.display = 'none';
-            });
+          let info = '';
+          const errorData = await response.json(); // 假设错误响应也是JSON格式
+
+          if (response.status === 514) {
+            info =
+              'TianliGPT is only available in mainland China, and is not yet open to overseas users, so stay tuned!';
+            tianliGPT.aiShowAnimation(info);
+            return info;
           }
-          throw new Error('TianliGPT：余额不足，请充值后请求新的文章');
+
+          // 根据403错误处理
+          if (response.status === 403) {
+            switch (errorData.err_code) {
+              case 1:
+                // 你的具体错误处理逻辑，例如显示某个特定的错误信息
+                info =
+                  '你的网站设置了Referrer-Policy为same-origin，这会导致Tianli无法验证你的请求来源。TianliGPT依赖refer进行来源判断，特别是meta标签的referrer属性需要修改，至少为origin。例如：<meta name="referrer" content="origin">';
+                tianliGPT.aiShowAnimation(info);
+                return info;
+              case 2:
+                // 你的具体错误处理逻辑，例如显示某个特定的错误信息
+                info =
+                  '你正在使用的tianliGPT_key已经被其他网站绑定或不存在，请检查当前网站地址是否在summary.zhheo.com中已绑定。';
+                tianliGPT.aiShowAnimation(info);
+                return info;
+              // 这里可以添加更多的err_code判断分支
+              case 3:
+                info = '参数缺失，请检查是否正确配置tianliGPT_key';
+                tianliGPT.aiShowAnimation(info);
+                return info;
+              case 4:
+                document.querySelectorAll('.post-TianliGPT').forEach(el => {
+                  (el as HTMLElement).style.display = 'none';
+                });
+                info = 'Key错误或余额不足，请充值后请求新的文章';
+                throw new Error('TianliGPT：' + info);
+              case 5:
+                info = errorData.err_msg;
+                tianliGPT.aiShowAnimation(info);
+                return info;
+              case 6:
+                info = errorData.err_msg;
+                tianliGPT.aiShowAnimation(info);
+                return info;
+              case 7:
+                info = errorData.err_msg;
+                tianliGPT.aiShowAnimation(info);
+                return info;
+              default:
+                // 默认的处理逻辑
+                tianliGPT.aiShowAnimation('未知错误，请检查API文档');
+                return '未知错误，请检查API文档';
+            }
+          }
+          return '获取文章摘要失败，请稍后再试。';
         }
       } catch (error: any) {
         if (error.name === 'AbortError') {
@@ -186,6 +268,10 @@ function tianliGPT(usePjax: boolean) {
       (element as HTMLElement).style.display = 'block';
       element.innerHTML = '生成中...' + '<span class="blinking-cursor"></span>';
 
+      //给AItag添加动画
+      const aiTag = document.querySelector('.tianliGPT-tag');
+      aiTag?.classList.add('loadingAI');
+
       let animationRunning = true;
       let currentIndex = 0;
       let initialAnimation = true;
@@ -213,6 +299,9 @@ function tianliGPT(usePjax: boolean) {
               (element as HTMLElement).style.display = 'block';
               tianliGPTIsRunning = false;
               observer.disconnect(); // 暂停监听
+              //给AItag停止动画
+              const aiTag = document.querySelector('.tianliGPT-tag');
+              aiTag?.classList.remove('loadingAI');
             }
           }
           requestAnimationFrame(animate);
@@ -246,23 +335,10 @@ function tianliGPT(usePjax: boolean) {
     }
     tianliGPT.fetchTianliGPT(content).then(data => {
       if (typeof data === 'string') {
-        const explanationDiv = document.querySelector(
-          '.tianliGPT-explanation'
-        ) as HTMLElement | null;
-        if (explanationDiv) {
-          explanationDiv.textContent = data;
-        }
+        // console.error('TianliGPT：' + data);
         return;
       }
-
-      const summary = data.summary;
-
-      const audioId = data.audioId;
-      const buttonDiv = document.querySelector('.tianliGPT-tag') as HTMLElement | null;
-      if (!buttonDiv) {
-        return;
-      }
-      buttonDiv.dataset.audioId = audioId; // 将音频的 ID 存储在按钮的 dataset 属性中
+      const summary = data?.summary;
       tianliGPT.aiShowAnimation(summary);
     });
   }
@@ -309,116 +385,3 @@ tianliGPT(false);
 document.addEventListener('pjax:complete', function () {
   tianliGPT(true);
 });
-
-// fix: 点击按钮播放音频会多次播放
-// document.addEventListener('click', function (event) {
-//   const target = event.target as HTMLElement | null;
-//   if (!target) {
-//     return;
-//   }
-//   if (target.classList.contains('tianliGPT-tag')) {
-//     playAudio();
-//   }
-// });
-
-function playAudio() {
-  return console.warn('音频功能暂时不可用');
-}
-// let audioPlayer: HTMLAudioElement | null = null; // 用于存储音频播放器对象
-// function playAudio() {
-//   if (audioPlayer && !audioPlayer.paused) {
-//     audioPlayer.pause();
-//   } else {
-//     if (!audioPlayer) {
-//       const buttonDiv = document.querySelector('.tianliGPT-tag') as HTMLElement | null;
-//       if (!buttonDiv) {
-//         return;
-//       }
-//       const audioId = buttonDiv.dataset.audioId;
-
-//       if (!audioId) {
-//         console.error('未找到音频 ID');
-//         return;
-//       }
-
-//       const audioUrl = `https://summary.tianli0.top/audio?id=${encodeURIComponent(
-//         audioId
-//       )}&key=${encodeURIComponent(tianliGPT_key)}`;
-
-//       audioPlayer = new Audio(audioUrl);
-
-//       audioPlayer.addEventListener('ended', () => {
-//         buttonDiv.classList.remove('playing');
-//       });
-
-//       audioPlayer.addEventListener('play', () => {
-//         buttonDiv.classList.add('playing');
-//       });
-
-//       audioPlayer.addEventListener('pause', () => {
-//         buttonDiv.classList.remove('playing');
-//       });
-//     }
-
-//     setTimeout(() => {
-//       audioPlayer?.play().catch(error => {
-//         console.error('播放音频失败:', error);
-//       });
-//     }, 100); // 添加延迟以确保播放请求能够正常执行
-//   }
-
-//   const buttonDiv = document.querySelector('.tianliGPT-tag') as HTMLElement | null;
-//   if (!buttonDiv) {
-//     return;
-//   }
-
-//   buttonDiv.addEventListener('click', function () {
-//     buttonDiv.classList.toggle('playing');
-//   });
-
-//   const svgAnimation =
-//     '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1692880829044" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2346" data-darkreader-inline-fill="" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20"><path d="M512 1024a512 512 0 1 0 0-1024 512 512 0 1 0 0 1024z m0-704a192 192 0 1 1 0 384 192 192 0 1 1 0-384z" p-id="2347"></path></svg>';
-
-//   if (buttonDiv.classList.contains('playing')) {
-//     buttonDiv.innerHTML = svgAnimation;
-//     buttonDiv.style.animation = '';
-//     buttonDiv.style.color = '#ff0000';
-//     buttonDiv.style.backgroundColor = 'transparent';
-//     buttonDiv.style.padding = '0';
-//   } else {
-//     buttonDiv.innerHTML = svgAnimation;
-//     buttonDiv.style.animation = '';
-//     buttonDiv.style.color = '#000000';
-//     buttonDiv.style.backgroundColor = 'transparent';
-//     buttonDiv.style.padding = '0';
-//   }
-// }
-
-document.addEventListener('click', function (event) {
-  const target: any = event.target;
-  const buttonDiv = document.querySelector('.tianliGPT-tag') as HTMLElement | null;
-
-  if (buttonDiv) {
-    buttonDiv.addEventListener('click', function () {
-      buttonDiv.classList.toggle('playing');
-    });
-
-    if (target === buttonDiv || buttonDiv.contains(target)) {
-      playAudio();
-    }
-  }
-});
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  var tianliGPT_postSelector: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  var tianliGPT_wordLimit: number;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  var tianliGPT_key: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  var tianliGPT_typingAnimate: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  var tianliGPT_postURL: string;
-}
-export {};
