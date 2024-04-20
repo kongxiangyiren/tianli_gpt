@@ -7,5 +7,6 @@ declare global {
     var tianliGPT_postURL: string;
     var tianliGPT_Title: string;
     var tianliGPT_Name: string;
+    var tianliGPT_blacklist: string;
 }
 export {};

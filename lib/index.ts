@@ -17,9 +17,10 @@ declare global {
   var tianliGPT_Title: string;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   var tianliGPT_Name: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  var tianliGPT_blacklist: string;
 }
 export {};
-
 
 console.log(
   '\n %c Post-Abstract-AI 博客文章摘要AI生成工具 %c https://github.com/zhheo/Post-Abstract-AI \n',
@@ -150,19 +151,27 @@ function tianliGPT(usePjax: boolean) {
         tianliGPT.aiShowAnimation(info);
         return info;
       }
-      const url = window.location.href;
-      const title = document.title;
-      const apiUrl = `https://summary.tianli0.top/?content=${encodeURIComponent(
-        content
-      )}&key=${encodeURIComponent(tianliGPT_key)}&url=${encodeURIComponent(
-        url
-      )}&title=${encodeURIComponent(title)}`;
+      // const url = window.location.href;
+      // const title = document.title;
+      const apiUrl = 'https://summary.tianli0.top/';
       const timeout = 20000; // 设置超时时间（毫秒）
 
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
-        const response = await fetch(apiUrl, { signal: controller.signal });
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            content: content,
+            key: tianliGPT_key,
+            url: window.location.href,
+            title: document.title
+          }),
+          signal: controller.signal
+        });
         clearTimeout(timeoutId); // 清除定时器，避免不必要的abort
 
         if (response.ok) {
@@ -225,6 +234,7 @@ function tianliGPT(usePjax: boolean) {
                 return '未知错误，请检查API文档';
             }
           }
+          tianliGPT.aiShowAnimation('获取文章摘要失败，请稍后再试。');
           return '获取文章摘要失败，请稍后再试。';
         }
       } catch (error: any) {
@@ -338,14 +348,14 @@ function tianliGPT(usePjax: boolean) {
         // console.error('TianliGPT：' + data);
         return;
       }
-      const summary = data?.summary;
+      const summary = data.summary;
       tianliGPT.aiShowAnimation(summary);
     });
   }
 
   function checkURLAndRun() {
     if (typeof tianliGPT_postURL === 'undefined') {
-      runTianliGPT(); // 如果没有设置自定义 URL，则直接执行 runTianliGPT() 函数
+      tianliGPTCustomBlackList(); // 如果没有设置自定义 URL，则直接执行 runTianliGPT() 函数
       return;
     }
 
@@ -362,12 +372,38 @@ function tianliGPT(usePjax: boolean) {
       const currentURL = window.location.href;
 
       if (urlPattern.test(currentURL)) {
-        runTianliGPT(); // 如果当前 URL 符合用户设置的 URL，则执行 runTianliGPT() 函数
+        tianliGPTCustomBlackList(); // 如果当前 URL 符合用户设置的 URL，则执行 runTianliGPT() 函数
       } else {
         console.log('TianliGPT：因为不符合自定义的链接规则，我决定不执行摘要功能。');
       }
     } catch (error) {
       console.error('TianliGPT：我没有看懂你编写的自定义链接规则，所以我决定不执行摘要功能', error);
+    }
+  }
+
+  function tianliGPTCustomBlackList() {
+    if (typeof tianliGPT_blacklist === 'undefined') {
+      runTianliGPT(); // 如果没有设置自定义 URL，则直接执行 runTianliGPT() 函数
+      return;
+    } else {
+      // 使用 fetch 请求 JSON 文件
+      fetch(tianliGPT_blacklist)
+        .then(response => response.json())
+        .then(data => {
+          const urlList = data.blackurls; // 假设 JSON 文件中有一个 urls 键
+          let currentPageUrl = window.location.href;
+          let isBlacklisted = urlList.some((pattern: string) => {
+            // 将通配符转换为正则表达式
+            let regex = new RegExp('^' + pattern.replace(/\*/g, '.*') + '$');
+            return regex.test(currentPageUrl);
+          });
+
+          // 如果当前页面 URL 不在黑名单中，则执行 tianliGPT
+          if (!isBlacklisted) {
+            runTianliGPT();
+          }
+        })
+        .catch(error => console.error('Error fetching blacklist:', error));
     }
   }
 

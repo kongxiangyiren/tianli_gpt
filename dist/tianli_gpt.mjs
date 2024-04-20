@@ -7,27 +7,27 @@ console.log(
   "color: #fadfa3; background: #030307; padding:5px 0;",
   "background: #fadfa3; padding:5px 0;"
 );
-function y(G) {
-  let T = !1;
-  function w(t) {
-    A();
+function G(w) {
+  let m = !1;
+  function A(t) {
+    v();
     const n = document.querySelector(t);
     if (!n)
       return;
-    const r = document.createElement("div");
-    r.className = "post-TianliGPT";
-    const s = document.createElement("div");
-    s.className = "tianliGPT-title", r.appendChild(s);
-    const a = document.createElement("i");
-    a.className = "tianliGPT-title-icon", s.appendChild(a), a.innerHTML = _;
+    const a = document.createElement("div");
+    a.className = "post-TianliGPT";
     const i = document.createElement("div");
-    i.className = "tianliGPT-title-text", typeof tianliGPT_Title > "u" ? i.textContent = "AI摘要" : i.textContent = tianliGPT_Title, s.appendChild(i);
-    const o = document.createElement("div");
-    o.className = "tianliGPT-tag", o.id = "tianliGPT-tag", typeof tianliGPT_Name > "u" ? o.textContent = "TianliGPT" : o.textContent = tianliGPT_Name, s.appendChild(o);
-    const c = document.createElement("div");
-    c.className = "tianliGPT-explanation", c.innerHTML = '生成中...<span class="blinking-cursor"></span>', r.appendChild(c), n.insertBefore(r, n.firstChild);
+    i.className = "tianliGPT-title", a.appendChild(i);
+    const o = document.createElement("i");
+    o.className = "tianliGPT-title-icon", i.appendChild(o), o.innerHTML = _;
+    const r = document.createElement("div");
+    r.className = "tianliGPT-title-text", typeof tianliGPT_Title > "u" ? r.textContent = "AI摘要" : r.textContent = tianliGPT_Title, i.appendChild(r);
+    const e = document.createElement("div");
+    e.className = "tianliGPT-tag", e.id = "tianliGPT-tag", typeof tianliGPT_Name > "u" ? e.textContent = "TianliGPT" : e.textContent = tianliGPT_Name, i.appendChild(e);
+    const s = document.createElement("div");
+    s.className = "tianliGPT-explanation", s.innerHTML = '生成中...<span class="blinking-cursor"></span>', a.appendChild(s), n.insertBefore(a, n.firstChild);
   }
-  function A() {
+  function v() {
     var n;
     const t = document.querySelector(".post-TianliGPT");
     t && ((n = t.parentElement) == null || n.removeChild(t));
@@ -41,17 +41,17 @@ function y(G) {
           return console.warn(
             "TianliGPT：找不到文章容器。请尝试将引入的代码放入到文章容器之后。如果本身没有打算使用摘要功能可以忽略此提示。"
           ), "";
-        const r = n.getElementsByTagName("p"), s = n.querySelectorAll("h1, h2, h3, h4, h5");
-        let a = "";
-        for (let e of s)
-          a += e.innerText + " ";
-        for (let e of r) {
-          const u = e.innerText.replace(/https?:\/\/[^\s]+/g, "");
-          a += u;
+        const a = n.getElementsByTagName("p"), i = n.querySelectorAll("h1, h2, h3, h4, h5");
+        let o = "";
+        for (let c of i)
+          o += c.innerText + " ";
+        for (let c of a) {
+          const u = c.innerText.replace(/https?:\/\/[^\s]+/g, "");
+          o += u;
         }
-        const i = t + " " + a;
-        let o = 1e3;
-        return typeof tianliGPT_wordLimit < "u" && (o = tianliGPT_wordLimit), i.slice(0, o);
+        const r = t + " " + o;
+        let e = 1e3;
+        return typeof tianliGPT_wordLimit < "u" && (e = tianliGPT_wordLimit), r.slice(0, e);
       } catch (t) {
         return console.error(
           "TianliGPT错误：可能由于一个或多个错误导致没有正常运行，原因出在获取文章容器中的内容失败，或者可能是在文章转换过程中失败。",
@@ -68,24 +68,32 @@ function y(G) {
         const i = "请购买 key 使用，如果你能看到此条内容，则说明代码安装正确。";
         return l.aiShowAnimation(i), i;
       }
-      const n = window.location.href, r = document.title, s = `https://summary.tianli0.top/?content=${encodeURIComponent(
-        t
-      )}&key=${encodeURIComponent(tianliGPT_key)}&url=${encodeURIComponent(
-        n
-      )}&title=${encodeURIComponent(r)}`, a = 2e4;
+      const n = "https://summary.tianli0.top/", a = 2e4;
       try {
-        const i = new AbortController(), o = setTimeout(() => i.abort(), a), c = await fetch(s, { signal: i.signal });
-        if (clearTimeout(o), c.ok)
+        const i = new AbortController(), o = setTimeout(() => i.abort(), a), r = await fetch(n, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            content: t,
+            key: tianliGPT_key,
+            url: window.location.href,
+            title: document.title
+          }),
+          signal: i.signal
+        });
+        if (clearTimeout(o), r.ok)
           return {
-            summary: (await c.json()).summary
+            summary: (await r.json()).summary
           };
         {
           let e = "";
-          const u = await c.json();
-          if (c.status === 514)
+          const s = await r.json();
+          if (r.status === 514)
             return e = "TianliGPT is only available in mainland China, and is not yet open to overseas users, so stay tuned!", l.aiShowAnimation(e), e;
-          if (c.status === 403)
-            switch (u.err_code) {
+          if (r.status === 403)
+            switch (s.err_code) {
               case 1:
                 return e = '你的网站设置了Referrer-Policy为same-origin，这会导致Tianli无法验证你的请求来源。TianliGPT依赖refer进行来源判断，特别是meta标签的referrer属性需要修改，至少为origin。例如：<meta name="referrer" content="origin">', l.aiShowAnimation(e), e;
               case 2:
@@ -93,19 +101,19 @@ function y(G) {
               case 3:
                 return e = "参数缺失，请检查是否正确配置tianliGPT_key", l.aiShowAnimation(e), e;
               case 4:
-                throw document.querySelectorAll(".post-TianliGPT").forEach((m) => {
-                  m.style.display = "none";
+                throw document.querySelectorAll(".post-TianliGPT").forEach((c) => {
+                  c.style.display = "none";
                 }), e = "Key错误或余额不足，请充值后请求新的文章", new Error("TianliGPT：" + e);
               case 5:
-                return e = u.err_msg, l.aiShowAnimation(e), e;
+                return e = s.err_msg, l.aiShowAnimation(e), e;
               case 6:
-                return e = u.err_msg, l.aiShowAnimation(e), e;
+                return e = s.err_msg, l.aiShowAnimation(e), e;
               case 7:
-                return e = u.err_msg, l.aiShowAnimation(e), e;
+                return e = s.err_msg, l.aiShowAnimation(e), e;
               default:
                 return l.aiShowAnimation("未知错误，请检查API文档"), "未知错误，请检查API文档";
             }
-          return "获取文章摘要失败，请稍后再试。";
+          return l.aiShowAnimation("获取文章摘要失败，请稍后再试。"), "获取文章摘要失败，请稍后再试。";
         }
       } catch (i) {
         return i.name === "AbortError" ? window.location.hostname === "localhost" ? (console.warn("警告：请勿在本地主机上测试 API 密钥。"), "获取文章摘要超时。请勿在本地主机上测试 API 密钥。") : (console.error("请求超时"), "获取文章摘要超时。当你出现这个问题时，可能是key或者绑定的域名不正确。也可能是因为文章过长导致的 AI 运算量过大，您可以稍等一下然后刷新页面重试。") : (console.error("请求失败：", i), "获取文章摘要失败，请稍后再试。");
@@ -113,70 +121,81 @@ function y(G) {
     },
     aiShowAnimation: function(t = "") {
       const n = document.querySelector(".tianliGPT-explanation");
-      if (!n || T)
+      if (!n || m)
         return;
       if (typeof tianliGPT_typingAnimate < "u" && !tianliGPT_typingAnimate) {
         n.innerHTML = t;
         return;
       }
-      T = !0;
-      const r = 25, s = 6;
+      m = !0;
+      const a = 25, i = 6;
       n.style.display = "block", n.innerHTML = '生成中...<span class="blinking-cursor"></span>';
-      const a = document.querySelector(".tianliGPT-tag");
-      a == null || a.classList.add("loadingAI");
-      let i = !0, o = 0, c = !0, e = performance.now();
+      const o = document.querySelector(".tianliGPT-tag");
+      o == null || o.classList.add("loadingAI");
+      let r = !0, e = 0, s = !0, c = performance.now();
       const u = () => {
-        if (o < t.length && i) {
-          const d = performance.now(), g = d - e, v = t.slice(o, o + 1), I = /[，。！、？,.!?]/.test(v) ? r * s : r;
-          if (g >= I)
-            if (n.innerText = t.slice(0, o + 1), e = d, o++, o < t.length)
-              n.innerHTML = t.slice(0, o) + '<span class="blinking-cursor"></span>';
+        if (e < t.length && r) {
+          const d = performance.now(), y = d - c, k = t.slice(e, e + 1), S = /[，。！、？,.!?]/.test(k) ? a * i : a;
+          if (y >= S)
+            if (n.innerText = t.slice(0, e + 1), c = d, e++, e < t.length)
+              n.innerHTML = t.slice(0, e) + '<span class="blinking-cursor"></span>';
             else {
-              n.innerHTML = t, n.style.display = "block", T = !1, m.disconnect();
-              const f = document.querySelector(".tianliGPT-tag");
-              f == null || f.classList.remove("loadingAI");
+              n.innerHTML = t, n.style.display = "block", m = !1, g.disconnect();
+              const T = document.querySelector(".tianliGPT-tag");
+              T == null || T.classList.remove("loadingAI");
             }
           requestAnimationFrame(u);
         }
-      }, m = new IntersectionObserver(
+      }, g = new IntersectionObserver(
         (d) => {
-          i = d[0].isIntersecting, i && c && setTimeout(() => {
+          r = d[0].isIntersecting, r && s && setTimeout(() => {
             requestAnimationFrame(u);
           }, 200);
         },
         { threshold: 0 }
       );
       let P = document.querySelector(".post-TianliGPT");
-      P && m.observe(P);
+      P && g.observe(P);
     }
   };
-  function p() {
-    w(tianliGPT_postSelector);
+  function f() {
+    A(tianliGPT_postSelector);
     const t = l.getTitleAndContent();
     t && console.log("TianliGPT本次提交的内容为：" + t), l.fetchTianliGPT(t).then((n) => {
       if (typeof n == "string")
         return;
-      const r = n == null ? void 0 : n.summary;
-      l.aiShowAnimation(r);
+      const a = n.summary;
+      l.aiShowAnimation(a);
     });
   }
-  function h() {
+  function p() {
     if (typeof tianliGPT_postURL > "u") {
-      p();
+      h();
       return;
     }
     try {
-      const t = (a) => new RegExp("^" + a.split(/\*+/).map(n).join(".*") + "$"), n = (a) => a.replace(/[|\\{}()[\]^$+*?.]/g, "\\{{input}}"), r = t(tianliGPT_postURL), s = window.location.href;
-      r.test(s) ? p() : console.log("TianliGPT：因为不符合自定义的链接规则，我决定不执行摘要功能。");
+      const t = (o) => new RegExp("^" + o.split(/\*+/).map(n).join(".*") + "$"), n = (o) => o.replace(/[|\\{}()[\]^$+*?.]/g, "\\{{input}}"), a = t(tianliGPT_postURL), i = window.location.href;
+      a.test(i) ? h() : console.log("TianliGPT：因为不符合自定义的链接规则，我决定不执行摘要功能。");
     } catch (t) {
       console.error("TianliGPT：我没有看懂你编写的自定义链接规则，所以我决定不执行摘要功能", t);
     }
   }
-  G ? h() : document.addEventListener("DOMContentLoaded", function() {
-    h();
+  function h() {
+    if (typeof tianliGPT_blacklist > "u") {
+      f();
+      return;
+    } else
+      fetch(tianliGPT_blacklist).then((t) => t.json()).then((t) => {
+        const n = t.blackurls;
+        let a = window.location.href;
+        n.some((o) => new RegExp("^" + o.replace(/\*/g, ".*") + "$").test(a)) || f();
+      }).catch((t) => console.error("Error fetching blacklist:", t));
+  }
+  w ? p() : document.addEventListener("DOMContentLoaded", function() {
+    p();
   });
 }
-y(!1);
+G(!1);
 document.addEventListener("pjax:complete", function() {
-  y(!0);
+  G(!0);
 });
