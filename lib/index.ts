@@ -1,7 +1,9 @@
 // 引入css
 import './assets/index.css';
 import ai from './assets/ai.svg';
-
+interface H extends History {
+  onpushstate: any;
+}
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   var tianliGPT_postSelector: string;
@@ -36,10 +38,28 @@ function tianliGPT(usePjax: boolean) {
     removeExistingAIDiv();
 
     // 获取目标元素
-    const targetElement = document.querySelector(selector);
+    let targetElement = document.querySelector(selector);
 
-    // 如果没有找到目标元素，不执行任何操作
+    // 如果没有找到目标元素，持续尝试直到超时
     if (!targetElement) {
+      const maxDuration = 20000; // 最大等待时间10秒
+      const interval = 300; // 每0.3秒检查一次
+      let elapsed = 0; // 已经过去的时间
+
+      const intervalId = setInterval(() => {
+        elapsed += interval;
+        targetElement = document.querySelector(selector); // 使用let声明后，这里可以更新外部的targetElement变量
+
+        if (targetElement) {
+          clearInterval(intervalId); // 找到元素，清除定时器
+          // console.log('找到目标元素:', targetElement);
+          // 这里可以添加对找到的元素的操作
+        } else if (elapsed >= maxDuration) {
+          clearInterval(intervalId); // 超时，清除定时器
+          console.log('超时未找到元素');
+          return;
+        }
+      }, interval);
       return;
     }
 
@@ -365,20 +385,41 @@ function tianliGPT(usePjax: boolean) {
       };
 
       const regExpEscape = (s: string) => {
-        return s.replace(/[|\\{}()[\]^$+*?.]/g, '\\{{input}}');
+        return s.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
       };
 
       const urlPattern = wildcardToRegExp(tianliGPT_postURL);
       const currentURL = window.location.href;
 
       if (urlPattern.test(currentURL)) {
-        tianliGPTCustomBlackList(); // 如果当前 URL 符合用户设置的 URL，则执行 runTianliGPT() 函数
+        attemptRunTianliGPT(); // 使用新函数处理重试逻辑
       } else {
-        console.log('TianliGPT：因为不符合自定义的链接规则，我决定不执行摘要功能。');
+        console.log(
+          `TianliGPT：当前 URL '${currentURL}' 不符合规则 '${tianliGPT_postURL}'，所以我决定不执行摘要功能。`
+        );
       }
     } catch (error) {
       console.error('TianliGPT：我没有看懂你编写的自定义链接规则，所以我决定不执行摘要功能', error);
     }
+  }
+
+  function attemptRunTianliGPT() {
+    const maxAttempts = 20; // 最多尝试10秒
+    let attempts = 0;
+
+    const interval = setInterval(() => {
+      try {
+        tianliGPTCustomBlackList(); // 尝试执行 runTianliGPT
+        clearInterval(interval); // 如果成功，清除定时器
+        // console.log("TianliGPT：成功执行！");
+      } catch (error) {
+        if (attempts >= maxAttempts) {
+          clearInterval(interval); // 超过尝试次数，清除定时器
+          console.error('TianliGPT：超时失败，停止尝试。', error);
+        }
+        attempts++;
+      }
+    }, 200); // 每1秒尝试一次
   }
 
   function tianliGPTCustomBlackList() {
@@ -421,3 +462,24 @@ tianliGPT(false);
 document.addEventListener('pjax:complete', function () {
   tianliGPT(true);
 });
+
+(function (history) {
+  const pushState = history.pushState;
+  history.pushState = function (state) {
+    if (typeof (history as H).onpushstate == 'function') {
+      setTimeout(function () {
+        (history as H).onpushstate({ state: state });
+      }, 100);
+    }
+
+    // 调用原函数并返回结果
+    // @ts-expect-error
+    return pushState.apply(history, arguments);
+  };
+})(window.history);
+
+// 现在你可以定义一个onpushstate函数来处理pushState调用
+(window.history as H).onpushstate = function () {
+  // 调用你的统计函数
+  tianliGPT(true);
+};
