@@ -21,6 +21,8 @@ declare global {
   var tianliGPT_Name: string;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   var tianliGPT_blacklist: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  var aiexcerpt: string;
 }
 export {};
 
@@ -159,6 +161,11 @@ function tianliGPT(usePjax: boolean) {
     },
 
     fetchTianliGPT: async function (content: string | number | boolean) {
+      if (typeof aiexcerpt !== 'undefined' && aiexcerpt) {
+        const info = aiexcerpt;
+        tianliGPT.aiShowAnimation(info);
+        return info;
+      }
       if (!tianliGPT_key) {
         const info =
           '没有获取到key，代码可能没有安装正确。如果你需要在tianli_gpt文件引用前定义tianliGPT_key变量。详细请查看文档。';

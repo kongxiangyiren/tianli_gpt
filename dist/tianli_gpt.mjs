@@ -70,6 +70,10 @@ function P(u) {
       }
     },
     fetchTianliGPT: async function(t) {
+      if (typeof aiexcerpt < "u" && aiexcerpt) {
+        const i = aiexcerpt;
+        return l.aiShowAnimation(i), i;
+      }
       if (!tianliGPT_key) {
         const i = "没有获取到key，代码可能没有安装正确。如果你需要在tianli_gpt文件引用前定义tianliGPT_key变量。详细请查看文档。";
         return l.aiShowAnimation(i), i;
@@ -145,8 +149,8 @@ function P(u) {
       let r = !0, e = 0, s = !0, c = performance.now();
       const d = () => {
         if (e < t.length && r) {
-          const p = performance.now(), v = p - c, k = t.slice(e, e + 1), x = /[，。！、？,.!?]/.test(k) ? o * i : o;
-          if (v >= x)
+          const p = performance.now(), v = p - c, S = t.slice(e, e + 1), k = /[，。！、？,.!?]/.test(S) ? o * i : o;
+          if (v >= k)
             if (n.innerText = t.slice(0, e + 1), c = p, e++, e < t.length)
               n.innerHTML = t.slice(0, e) + '<span class="blinking-cursor"></span>';
             else {
@@ -185,14 +189,14 @@ function P(u) {
     }
     try {
       const t = (a) => new RegExp("^" + a.split(/\*+/).map(n).join(".*") + "$"), n = (a) => a.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&"), o = t(tianliGPT_postURL), i = window.location.href;
-      o.test(i) ? S() : console.log(
+      o.test(i) ? x() : console.log(
         `TianliGPT：当前 URL '${i}' 不符合规则 '${tianliGPT_postURL}'，所以我决定不执行摘要功能。`
       );
     } catch (t) {
       console.error("TianliGPT：我没有看懂你编写的自定义链接规则，所以我决定不执行摘要功能", t);
     }
   }
-  function S() {
+  function x() {
     let n = 0;
     const o = setInterval(() => {
       try {

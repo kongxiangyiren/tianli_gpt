@@ -8,5 +8,6 @@ declare global {
     var tianliGPT_Title: string;
     var tianliGPT_Name: string;
     var tianliGPT_blacklist: string;
+    var aiexcerpt: string;
 }
 export {};
