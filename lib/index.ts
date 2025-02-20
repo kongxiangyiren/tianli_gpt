@@ -32,9 +32,8 @@ console.log(
   'background: #fadfa3; padding:5px 0;'
 );
 
+let tianliGPTIsRunning = false;
 function tianliGPT(usePjax: boolean) {
-  let tianliGPTIsRunning = false;
-
   function insertAIDiv(selector: string) {
     // 首先移除现有的 "post-TianliGPT" 类元素（如果有的话）
     removeExistingAIDiv();
@@ -229,7 +228,7 @@ function tianliGPT(usePjax: boolean) {
               case 2:
                 // 你的具体错误处理逻辑，例如显示某个特定的错误信息
                 info =
-                  '你正在使用的tianliGPT_key已经被其他网站绑定或不存在，请检查当前网站地址是否在summary.zhheo.com中已绑定。';
+                  '你正在使用的tianliGPT_key没有绑定当前网站，请检查当前的密钥是否绑定了当前网站地址。可以到summary.zhheo.com中绑定。';
                 tianliGPT.aiShowAnimation(info);
                 return info;
               // 这里可以添加更多的err_code判断分支
@@ -365,6 +364,10 @@ function tianliGPT(usePjax: boolean) {
     }
   };
   function runTianliGPT() {
+    if (typeof tianliGPT_postSelector === 'undefined') {
+      return;
+    }
+
     insertAIDiv(tianliGPT_postSelector);
     const content = tianliGPT.getTitleAndContent();
     if (content) {
@@ -430,15 +433,15 @@ function tianliGPT(usePjax: boolean) {
   }
 
   function tianliGPTCustomBlackList() {
-    if (typeof tianliGPT_blacklist === 'undefined') {
-      runTianliGPT(); // 如果没有设置自定义 URL，则直接执行 runTianliGPT() 函数
+    if (typeof tianliGPT_blacklist === 'undefined' || !tianliGPT_blacklist) {
+      runTianliGPT(); // 如果没有设置自定义 URL 或 URL 为空，则直接执行 runTianliGPT() 函数
       return;
     } else {
       // 使用 fetch 请求 JSON 文件
       fetch(tianliGPT_blacklist)
         .then(response => response.json())
         .then(data => {
-          const urlList = data.blackurls; // 假设 JSON 文件中有一个 urls 键
+          const urlList = data.blackurls; // 假设 JSON 文件中有一个 blackurls 键
           let currentPageUrl = window.location.href;
           let isBlacklisted = urlList.some((pattern: string) => {
             // 将通配符转换为正则表达式
@@ -451,7 +454,10 @@ function tianliGPT(usePjax: boolean) {
             runTianliGPT();
           }
         })
-        .catch(error => console.error('Error fetching blacklist:', error));
+        .catch(error => {
+          console.error('请求黑名单失败。Error fetching blacklist:', error);
+          runTianliGPT(); // 请求出错时继续执行 runTianliGPT()
+        });
     }
   }
 
@@ -478,7 +484,6 @@ document.addEventListener('pjax:complete', function () {
         (history as H).onpushstate({ state: state });
       }, 100);
     }
-
     // 调用原函数并返回结果
     // @ts-expect-error
     return pushState.apply(history, arguments);

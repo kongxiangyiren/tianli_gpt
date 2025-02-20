@@ -1,4 +1,3 @@
-
 declare global {
     var tianliGPT_postSelector: string;
     var tianliGPT_wordLimit: number;
